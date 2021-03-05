@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.housekeeping.dao.ProductMapper">
+    <!--查询全部商品-->
+    <select id="selectAll" resultMap="ProductBaseResultMap">
+        SELECT * FROM product;
+    </select>
+
+    <!--    新增商品-->
+    <insert id="insert" parameterType="com.housekeeping.bean.Product">
+        INSERT INTO product VALUES(null, #{name}, #{introduce}, #{price}, #{status}, #{photo}, #{sales}, #{categoryId})
+    </insert>
+
+    <!--   根据id删除产品 -->
+    <delete id="deleteById" parameterType="long">
+        DELETE  FROM product where id = #{id}
+    </delete>
+    <!--    -->
+    <update id="updateById" parameterType="com.housekeeping.bean.Product">
+        UPDATE product
+        SET name = #{name},
+        introduce = #{introduce},
+        price = #{price},
+        status = #{status},
+        photo = #{photo},
+        sales = #{sales},
+        category_id = #{categoryId}
+        WHERE id = #{id}
+    </update>
+
+    <!--    结果集映射-->
+    <resultMap id="ProductBaseResultMap" type="com.housekeeping.bean.Product">
+        <id property="id" column="id"></id>
+        <result property="name" column="name"></result>
+        <result property="introduce" column="introduce"></result>
+        <result property="price" column="price"></result>
+        <result property="status" column="status"></result>
+        <result property="photo" column="photo"></result>
+        <result property="sales" column="sales"></result>
+        <result property="categoryId" column="category_id"></result>
+
+    </resultMap>
+</mapper>
