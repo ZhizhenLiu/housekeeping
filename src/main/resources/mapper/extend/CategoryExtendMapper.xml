@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.housekeeping.dao.CategoryMapper">
+
+    <!--mapper中方法的实现配置属性-->
+    <select id="selectAll" resultMap="CategoryBaseResultMap">
+        SELECT * FROM category
+    </select>
+
+    <select id="selectCategoryTree" resultMap="CategoryTreeResultMap">
+        select * from category where parent_id is NULL
+    </select>
+
+    <select id="selectByParentId" resultMap="CategoryBaseResultMap">
+        select * from category where parent_id = #{id}
+    </select>
+
+    <select id="selectById" resultMap="CategoryBaseResultMap">
+        SELECT * FROM category WHERE ID = #{id};
+    </select>
+    <!-- 映射结果集-->
+    <resultMap id="CategoryBaseResultMap" type="com.housekeeping.bean.Category">
+        <id property="id" column="id"></id>
+        <result property="name" column="name"></result>
+        <result property="nu" column="nu"></result>
+        <result property="parentId" column="parent_id"></result>
+    </resultMap>
+
+    <!--根据父栏目id找子栏目-->
+    <resultMap id="CategoryTreeResultMap"
+               type="com.housekeeping.bean.extend.CategoryExtend"
+               extends="CategoryBaseResultMap">
+        <!-- 对于基本属性正常封装，对于children调用另外一条sql-->
+        <!--   一对多关系     -->
+        <collection property="children" column="id" select="selectByParentId"></collection>
+    </resultMap>
+</mapper>
